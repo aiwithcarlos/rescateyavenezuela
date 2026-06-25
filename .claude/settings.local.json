@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/carlosmedina/workspace/**)",
+      "Bash(npx create-next-app@latest help-venezuela --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm)",
+      "Bash(mkdir -p /tmp/hv-temp)",
+      "Bash(mv README.md chat-with-claudeai.md /tmp/hv-temp/)"
+    ]
+  }
+}
