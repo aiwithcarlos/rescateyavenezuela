@@ -213,7 +213,7 @@ export function ReportForm() {
                     </Link>
 
                     {/* Espacio para que el footer no tape */}
-                    <div className="h-24" />
+                    <div style={{ height: "520px" }} />
                 </div>
             )}
 
@@ -390,7 +390,7 @@ export function ReportForm() {
                     </Link>
 
                     {/* Espacio para que el footer no tape */}
-                    <div className="h-24" />
+                    <div style={{ height: "520px" }} />
                 </div>
             )}
         </div>
