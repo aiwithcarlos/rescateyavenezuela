@@ -224,25 +224,6 @@ export default function IncidentDetailPage() {
             </div>
           )}
 
-          {/* Compartir */}
-          <button
-            onClick={() => {
-              if (navigator.share) {
-                navigator.share({
-                  title: `Incidente: ${INCIDENT_TYPE_LABELS[incident.incident_type]}`,
-                  text: incident.description,
-                  url: window.location.href,
-                });
-              } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Enlace copiado al portapapeles');
-              }
-            }}
-            className="w-full py-2.5 text-sm font-semibold text-gray-500 border border-gray-200 rounded-xl hover:bg-gray-50"
-          >
-            📤 Compartir incidente
-          </button>
-
           {/* Regresar al mapa */}
           <Link
             href="/"
