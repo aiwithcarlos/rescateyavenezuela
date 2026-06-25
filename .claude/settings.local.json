@@ -4,7 +4,12 @@
       "Read(//Users/carlosmedina/workspace/**)",
       "Bash(npx create-next-app@latest help-venezuela --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm)",
       "Bash(mkdir -p /tmp/hv-temp)",
-      "Bash(mv README.md chat-with-claudeai.md /tmp/hv-temp/)"
+      "Bash(mv README.md chat-with-claudeai.md /tmp/hv-temp/)",
+      "Bash(npm install *)",
+      "Bash(cp /tmp/hv-temp/chat-with-claudeai.md /Users/carlosmedina/workspace/help-venezuela/)",
+      "Bash(rm -rf /tmp/hv-temp)",
+      "Bash(npx next *)",
+      "Bash(git add *)"
     ]
   }
 }
