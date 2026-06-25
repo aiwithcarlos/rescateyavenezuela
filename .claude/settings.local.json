@@ -13,7 +13,8 @@
       "Bash(gh auth *)",
       "Bash(git commit -m 'feat: MVP completo - App de rescate post-terremoto Venezuela *)",
       "Bash(npm run *)",
-      "Bash(git commit -m 'refactor: migrar todos los enums a español *)"
+      "Bash(git commit -m 'refactor: migrar todos los enums a español *)",
+      "Bash(git commit -m 'chore: renombrar proyecto a rescateyavenezuela *)"
     ]
   }
 }

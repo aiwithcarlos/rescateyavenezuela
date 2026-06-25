@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ayuda Venezuela — Mapa de Rescate",
+  title: "RescateYA Venezuela — Mapa de Rescate",
   description:
-    "Mapa de incidentes activos para coordinar rescates y ayuda tras el terremoto del 24 de junio de 2026 en Venezuela. Reporta incidentes o regístrate como voluntario.",
-  applicationName: "Ayuda Venezuela",
+    "Mapa de incidentes activos para coordinar rescates tras el terremoto del 24 de junio de 2026 en Venezuela. Reporta incidentes o regístrate como voluntario.",
+  applicationName: "RescateYA Venezuela",
   appleWebApp: {
     capable: true,
-    title: "Ayuda Venezuela",
+    title: "RescateYA Venezuela",
     statusBarStyle: "black-translucent",
   },
 };

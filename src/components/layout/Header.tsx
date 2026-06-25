@@ -8,11 +8,11 @@ export function Header() {
       <div className="flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center">
-            <span className="text-white text-sm font-bold">AV</span>
+            <span className="text-white text-sm font-bold">RY</span>
           </div>
           <div>
             <h1 className="text-sm font-bold text-gray-900 leading-tight">
-              Ayuda Venezuela
+              RescateYA
             </h1>
             <p className="text-[10px] text-gray-500 leading-tight">
               Mapa de incidentes activos

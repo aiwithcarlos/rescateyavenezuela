@@ -1,8 +1,8 @@
-# Ayuda Venezuela 🆘
+# RescateYA Venezuela 🆘
 
 **Mapa de incidentes activos para coordinar rescates tras el terremoto del 24 de junio de 2026 en Venezuela.**
 
-Aplicación web que conecta personas que necesitan ayuda con voluntarios que pueden llegar físicamente en minutos. Convierte el grito de auxilio en una señal geolocalizada que cualquiera puede ver.
+Aplicación web que conecta personas que necesitan ayuda con voluntarios que pueden llegar físicamente en minutos. Convierte el grito de auxilio en una señal geolocalizada que cualquiera puede ver. Dominio: [rescateyavenezuela.com](https://rescateyavenezuela.com).
 
 ---
 
@@ -53,8 +53,8 @@ Reportado → Ayuda en camino → Resuelto / Derivado a Protección Civil
 ### 1. Clonar e instalar
 
 ```bash
-git clone https://github.com/tu-usuario/help-venezuela.git
-cd help-venezuela
+git clone https://github.com/tu-usuario/rescateyavenezuela.git
+cd rescateyavenezuela
 npm install
 ```
 
