@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { Header } from '@/components/layout/Header';
 import { useApp } from '@/providers/AppProvider';
 import { VolunteerButton } from '@/components/volunteer/VolunteerButton';
 
@@ -61,7 +62,7 @@ export default function IncidentDetailPage() {
   if (loading) {
     return (
       <div className="h-full flex flex-col">
-        <DetailHeader />
+        <Header />
         <div className="flex-1 flex items-center justify-center">
           <LoadingSpinner size="lg" />
         </div>
@@ -72,7 +73,7 @@ export default function IncidentDetailPage() {
   if (error || !incident) {
     return (
       <div className="h-full flex flex-col">
-        <DetailHeader />
+        <Header />
         <ErrorBanner
           message={error || 'Incidente no encontrado'}
           onRetry={() => window.location.reload()}
@@ -99,7 +100,11 @@ export default function IncidentDetailPage() {
 
   return (
     <div className="h-full flex flex-col bg-gray-50">
-      <DetailHeader />
+      <Header />
+
+      <h1 className="text-2xl font-extrabold text-gray-900 px-4 pt-5 pb-2 mt-14">
+        Detalle del incidente
+      </h1>
 
       <div className="flex-1 overflow-y-auto">
         {/* Foto */}
@@ -260,20 +265,5 @@ export default function IncidentDetailPage() {
         </div>
       </div>
     </div>
-  );
-}
-
-function DetailHeader() {
-  return (
-    <header className="flex items-center px-4 h-14 border-b border-gray-200 bg-white safe-area-top shrink-0">
-      <Link href="/" className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-        Mapa
-      </Link>
-      <h1 className="flex-1 text-center text-sm font-bold text-gray-900">Detalle</h1>
-      <div className="w-16" />
-    </header>
   );
 }
