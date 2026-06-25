@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/providers/AppProvider';
 import { PhotoUploader } from '@/components/ui/PhotoUploader';
@@ -201,16 +200,6 @@ export function ReportForm() {
                         ))}
                     </div>
 
-                    {/* Botón Volver al mapa */}
-                    <Link
-                        href="/"
-                        className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5 mt-4 shrink-0"
-                    >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Volver al mapa
-                    </Link>
                 </div>
             )}
 
