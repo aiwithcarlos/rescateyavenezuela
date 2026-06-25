@@ -37,6 +37,7 @@ export interface Incident {
   address: string | null;
   status: IncidentStatus;
   volunteer_count: number;
+  arrived_count: number;
   max_volunteers: number;
   escalated_notes: string | null;
 }

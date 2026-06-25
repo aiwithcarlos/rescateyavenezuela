@@ -22,7 +22,8 @@ export function VolunteerButton({ incident, size = 'sm', onVolunteerChange }: Vo
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isFull = incident.volunteer_count >= incident.max_volunteers;
+  const totalActive = incident.volunteer_count + incident.arrived_count;
+  const isFull = totalActive >= incident.max_volunteers;
   const isResolved = incident.status === 'resuelto' || incident.status === 'escalado';
 
   const toggleAbility = (ability: AbilityType) => {

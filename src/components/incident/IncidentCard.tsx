@@ -34,31 +34,26 @@ export function IncidentCard({
         incident.status === 'ayuda_en_camino';
     const maxDisplay =
         incident.max_volunteers >= 999 ? '∞' : incident.max_volunteers;
+    const totalActive = incident.volunteer_count + incident.arrived_count;
+    const totalPct = incident.max_volunteers >= 999
+        ? Math.min(100, (totalActive / 50) * 100)
+        : Math.min(100, (totalActive / incident.max_volunteers) * 100);
 
-    const progressBarPct =
-        incident.max_volunteers >= 999
-            ? Math.min(100, (incident.volunteer_count / 50) * 100)
-            : Math.min(
-                  100,
-                  (incident.volunteer_count / incident.max_volunteers) * 100,
-              );
-
-    // Color de la barra de progreso
+    // Color de la barra de progreso (basado en total)
     const progressColor =
-        progressBarPct >= 100
-            ? 'bg-red-500'
-            : progressBarPct > 70
-              ? 'bg-yellow-500'
-              : 'bg-green-500';
+        totalPct >= 100 ? 'bg-red-500' : totalPct > 70 ? 'bg-yellow-500' : 'bg-green-500';
 
-    // Color del badge contador según cuántos voluntarios hay
+    // Color del badge contador (basado en total)
     const halfNeeded = incident.max_volunteers / 2;
     const counterBg =
-        incident.volunteer_count >= halfNeeded
+        totalActive >= halfNeeded
             ? 'bg-green-500 text-white'
-            : incident.volunteer_count >= 1
+            : totalActive >= 1
               ? 'bg-yellow-500 text-white'
               : 'bg-red-500 text-white';
+
+    // ¿Ya hay suficientes?
+    const isFull = totalActive >= incident.max_volunteers;
 
     if (compact) {
         return (
@@ -96,24 +91,42 @@ export function IncidentCard({
                             </span>
                         </div>
 
-                        {/* Voluntarios: label + badge contador */}
-                        <div className="flex items-center gap-2 mt-2">
-                            <span className="text-sm font-bold text-gray-600">
-                                Número de voluntarios hasta ahora:
-                            </span>
-                            <span
-                                className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-bold shrink-0 ${counterBg}`}
-                            >
-                                {incident.volunteer_count}/{maxDisplay}
-                            </span>
-                        </div>
-
-                        {/* Mini barra de progreso */}
-                        <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-1.5">
-                            <div
-                                className={`h-full rounded-full transition-all ${progressColor}`}
-                                style={{ width: `${progressBarPct}%` }}
-                            />
+                        {/* Voluntarios: label + badge + barras */}
+                        <div className="mt-2 space-y-1.5">
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-gray-600">
+                                    N° voluntarios:
+                                </span>
+                                <span
+                                    className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0 ${counterBg}`}
+                                >
+                                    {totalActive}/{maxDisplay}
+                                </span>
+                                {isFull && (
+                                    <span className="text-[10px] font-semibold text-green-600">✓ Suficiente</span>
+                                )}
+                            </div>
+                            {/* Barras separadas */}
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] text-gray-500 w-16 shrink-0">En camino:</span>
+                                <span className="text-[10px] font-bold text-gray-700 w-4">{incident.volunteer_count}</span>
+                                <div className="flex-1 h-1 bg-gray-100 rounded-full overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full transition-all ${incident.volunteer_count > 0 ? 'bg-yellow-500' : ''}`}
+                                        style={{ width: `${incident.max_volunteers >= 999 ? 0 : Math.min(100, (incident.volunteer_count / incident.max_volunteers) * 100)}%` }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] text-gray-500 w-16 shrink-0">En el lugar:</span>
+                                <span className="text-[10px] font-bold text-gray-700 w-4">{incident.arrived_count}</span>
+                                <div className="flex-1 h-1 bg-gray-100 rounded-full overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full transition-all ${incident.arrived_count > 0 ? 'bg-green-500' : ''}`}
+                                        style={{ width: `${incident.max_volunteers >= 999 ? 0 : Math.min(100, (incident.arrived_count / incident.max_volunteers) * 100)}%` }}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         {/* Botón Ver incidente */}
@@ -180,7 +193,7 @@ export function IncidentCard({
                 <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
                         className={`h-full rounded-full transition-all ${progressColor}`}
-                        style={{ width: `${progressBarPct}%` }}
+                        style={{ width: `${totalPct}%` }}
                     />
                 </div>
             </div>

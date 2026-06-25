@@ -134,6 +134,7 @@ export async function POST(request: NextRequest) {
                 reporter_phone: body.reporter_phone || null,
                 status: 'reportado',
                 volunteer_count: 0,
+                arrived_count: 0,
                 max_volunteers: body.max_volunteers || 50,
             })
             .select()

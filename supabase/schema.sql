@@ -59,6 +59,7 @@ CREATE TABLE incidents (
   status        incident_status NOT NULL DEFAULT 'reportado',
 
   volunteer_count INTEGER NOT NULL DEFAULT 0,
+  arrived_count   INTEGER NOT NULL DEFAULT 0,
   max_volunteers  INTEGER NOT NULL DEFAULT 50,
 
   escalated_notes TEXT
@@ -96,28 +97,63 @@ CREATE INDEX idx_volunteers_device ON volunteers (device_id);
 CREATE OR REPLACE FUNCTION update_volunteer_count()
 RETURNS TRIGGER AS $$
 BEGIN
-  -- INSERT: contar voluntarios activos (en_camino o llego_al_lugar)
-  IF TG_OP = 'INSERT' AND NEW.status IN ('en_camino', 'llego_al_lugar') THEN
-    UPDATE incidents
-    SET volunteer_count = volunteer_count + 1,
-        updated_at = NOW(),
-        status = CASE
-          WHEN status = 'reportado' THEN 'ayuda_en_camino'::incident_status
-          ELSE status
-        END
-    WHERE id = NEW.incident_id;
+  IF TG_OP = 'INSERT' THEN
+    -- Nuevo voluntario en camino
+    IF NEW.status = 'en_camino' THEN
+      UPDATE incidents
+      SET volunteer_count = volunteer_count + 1,
+          updated_at = NOW(),
+          status = CASE
+            WHEN status = 'reportado' THEN 'ayuda_en_camino'::incident_status
+            ELSE status
+          END
+      WHERE id = NEW.incident_id;
+    -- Nuevo voluntario que ya llegó
+    ELSIF NEW.status = 'llego_al_lugar' THEN
+      UPDATE incidents
+      SET arrived_count = arrived_count + 1,
+          updated_at = NOW(),
+          status = CASE
+            WHEN status = 'reportado' THEN 'ayuda_en_camino'::incident_status
+            ELSE status
+          END
+      WHERE id = NEW.incident_id;
+    END IF;
+
   ELSIF TG_OP = 'UPDATE' THEN
-    -- Solo cancelado deja de contar. en_camino y llego_al_lugar ambos cuentan.
-    -- Caso: dejar de contar (→ cancelado)
-    IF OLD.status IN ('en_camino', 'llego_al_lugar') AND NEW.status = 'cancelado' THEN
+    -- en_camino → llego_al_lugar: mover de en camino a llegados
+    IF OLD.status = 'en_camino' AND NEW.status = 'llego_al_lugar' THEN
+      UPDATE incidents
+      SET volunteer_count = GREATEST(volunteer_count - 1, 0),
+          arrived_count = arrived_count + 1,
+          updated_at = NOW()
+      WHERE id = NEW.incident_id;
+
+    -- en_camino → cancelado: quitar de en camino
+    ELSIF OLD.status = 'en_camino' AND NEW.status = 'cancelado' THEN
       UPDATE incidents
       SET volunteer_count = GREATEST(volunteer_count - 1, 0),
           updated_at = NOW()
       WHERE id = NEW.incident_id;
-    -- Caso: volver a contar (cancelado → activo)
-    ELSIF OLD.status = 'cancelado' AND NEW.status IN ('en_camino', 'llego_al_lugar') THEN
+
+    -- llego_al_lugar → cancelado: quitar de llegados
+    ELSIF OLD.status = 'llego_al_lugar' AND NEW.status = 'cancelado' THEN
+      UPDATE incidents
+      SET arrived_count = GREATEST(arrived_count - 1, 0),
+          updated_at = NOW()
+      WHERE id = NEW.incident_id;
+
+    -- cancelado → en_camino: volver a contar en camino
+    ELSIF OLD.status = 'cancelado' AND NEW.status = 'en_camino' THEN
       UPDATE incidents
       SET volunteer_count = volunteer_count + 1,
+          updated_at = NOW()
+      WHERE id = NEW.incident_id;
+
+    -- cancelado → llego_al_lugar: volver a contar como llegado
+    ELSIF OLD.status = 'cancelado' AND NEW.status = 'llego_al_lugar' THEN
+      UPDATE incidents
+      SET arrived_count = arrived_count + 1,
           updated_at = NOW()
       WHERE id = NEW.incident_id;
     END IF;

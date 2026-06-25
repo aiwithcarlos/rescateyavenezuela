@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useApp } from '@/providers/AppProvider';
 import { VolunteerButton } from '@/components/volunteer/VolunteerButton';
-import { VolunteerCounter } from '@/components/volunteer/VolunteerCounter';
+
 import { VolunteerList } from '@/components/volunteer/VolunteerList';
 
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -195,11 +195,43 @@ export default function IncidentDetailPage() {
             <h2 className="text-xs font-semibold text-gray-400 uppercase mb-3">
               Voluntarios
             </h2>
-            <VolunteerCounter
-              current={incident.volunteer_count}
-              max={incident.max_volunteers}
-              size="lg"
-            />
+            <div className="space-y-3">
+              {/* En camino */}
+              <div>
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-1">
+                  <span>
+                    🚶 {incident.volunteer_count} persona{incident.volunteer_count !== 1 ? 's' : ''} en camino
+                  </span>
+                </div>
+                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500 bg-yellow-500"
+                    style={{ width: `${Math.min(100, (incident.volunteer_count / incident.max_volunteers) * 100)}%` }}
+                  />
+                </div>
+              </div>
+              {/* En el lugar */}
+              <div>
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-1">
+                  <span>
+                    ✅ {incident.arrived_count} persona{incident.arrived_count !== 1 ? 's' : ''} en el lugar
+                  </span>
+                </div>
+                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500 bg-green-500"
+                    style={{ width: `${Math.min(100, (incident.arrived_count / incident.max_volunteers) * 100)}%` }}
+                  />
+                </div>
+              </div>
+              {/* Total */}
+              <div className="flex items-center justify-between text-xs text-gray-400 pt-1 border-t border-gray-100">
+                <span>Total: {incident.volunteer_count + incident.arrived_count} de {incident.max_volunteers >= 999 ? '∞' : incident.max_volunteers}</span>
+                {incident.volunteer_count + incident.arrived_count >= incident.max_volunteers && (
+                  <span className="text-green-600 font-semibold">✓ Suficiente ayuda</span>
+                )}
+              </div>
+            </div>
             <div className="mt-3">
               <VolunteerList volunteers={volunteers} />
             </div>
