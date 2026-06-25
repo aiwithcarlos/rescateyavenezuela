@@ -211,6 +211,9 @@ export function ReportForm() {
                         </svg>
                         Volver al mapa
                     </Link>
+
+                    {/* Espacio para que el footer no tape */}
+                    <div className="h-24" />
                 </div>
             )}
 
@@ -387,7 +390,7 @@ export function ReportForm() {
                     </Link>
 
                     {/* Espacio para que el footer no tape */}
-                    <div className="h-8" />
+                    <div className="h-24" />
                 </div>
             )}
         </div>
