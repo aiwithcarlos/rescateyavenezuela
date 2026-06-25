@@ -226,7 +226,7 @@ export function ReportForm() {
                     {/* Descripción */}
                     <div className="mb-4">
                         <label className="block text-sm font-semibold text-gray-700 mb-1">
-                            Describe la situación *
+                            Describe la situación y la necesidad *
                         </label>
                         <textarea
                             value={description}
@@ -245,7 +245,9 @@ export function ReportForm() {
                     {/* Dirección */}
                     <div className="mb-4">
                         <label className="block text-sm font-semibold text-gray-700 mb-1">
-                            Dirección o referencia del lugar
+                            Dirección, sé específico, agrega Estado, Municipio,
+                            Avenida o Calle. (El sistema también intetará
+                            detectar tu ubicación automáticamente)
                         </label>
                         <input
                             type="text"
