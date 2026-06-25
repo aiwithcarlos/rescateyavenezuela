@@ -7,7 +7,7 @@
   <rect x="0" y="0" width="48" height="48" rx="10" ry="10" fill="#DC2626"/>
   <text x="24" y="24" dominant-baseline="central" text-anchor="middle"
         fill="white" font-family="system-ui, -apple-system, sans-serif"
-        font-size="20" font-weight="700" letter-spacing="-0.5">
+        font-size="26" font-weight="800" letter-spacing="-1">
     RV
   </text>
 </svg>
