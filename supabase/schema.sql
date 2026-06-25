@@ -96,7 +96,8 @@ CREATE INDEX idx_volunteers_device ON volunteers (device_id);
 CREATE OR REPLACE FUNCTION update_volunteer_count()
 RETURNS TRIGGER AS $$
 BEGIN
-  IF TG_OP = 'INSERT' AND NEW.status = 'en_camino' THEN
+  -- INSERT: contar voluntarios activos (en_camino o llego_al_lugar)
+  IF TG_OP = 'INSERT' AND NEW.status IN ('en_camino', 'llego_al_lugar') THEN
     UPDATE incidents
     SET volunteer_count = volunteer_count + 1,
         updated_at = NOW(),
@@ -106,12 +107,15 @@ BEGIN
         END
     WHERE id = NEW.incident_id;
   ELSIF TG_OP = 'UPDATE' THEN
-    IF OLD.status = 'en_camino' AND NEW.status IN ('llego_al_lugar', 'cancelado') THEN
+    -- Solo cancelado deja de contar. en_camino y llego_al_lugar ambos cuentan.
+    -- Caso: dejar de contar (→ cancelado)
+    IF OLD.status IN ('en_camino', 'llego_al_lugar') AND NEW.status = 'cancelado' THEN
       UPDATE incidents
       SET volunteer_count = GREATEST(volunteer_count - 1, 0),
           updated_at = NOW()
       WHERE id = NEW.incident_id;
-    ELSIF OLD.status IN ('llego_al_lugar', 'cancelado') AND NEW.status = 'en_camino' THEN
+    -- Caso: volver a contar (cancelado → activo)
+    ELSIF OLD.status = 'cancelado' AND NEW.status IN ('en_camino', 'llego_al_lugar') THEN
       UPDATE incidents
       SET volunteer_count = volunteer_count + 1,
           updated_at = NOW()
