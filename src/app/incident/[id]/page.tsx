@@ -7,7 +7,7 @@ import { useApp } from '@/providers/AppProvider';
 import { VolunteerButton } from '@/components/volunteer/VolunteerButton';
 import { VolunteerCounter } from '@/components/volunteer/VolunteerCounter';
 import { VolunteerList } from '@/components/volunteer/VolunteerList';
-import { EscalateButton } from '@/components/incident/EscalateButton';
+
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorBanner } from '@/components/ui/ErrorBanner';
 import {
@@ -115,13 +115,17 @@ export default function IncidentDetailPage() {
 
       <div className="flex-1 overflow-y-auto">
         {/* Foto */}
-        {incident.photo_url && (
+        {incident.photo_url ? (
           <div className="w-full h-64 bg-gray-200">
             <img
               src={incident.photo_url}
               alt="Foto del incidente"
               className="w-full h-full object-cover"
             />
+          </div>
+        ) : (
+          <div className="w-full h-32 bg-gray-100 flex items-center justify-center">
+            <p className="text-sm text-gray-400">Sin foto del incidente</p>
           </div>
         )}
 
@@ -148,6 +152,29 @@ export default function IncidentDetailPage() {
               {incident.description || 'Sin descripción'}
             </p>
           </div>
+
+          {/* Datos de quien reporta */}
+          {(incident.reporter_name || incident.reporter_phone) && (
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <h2 className="text-xs font-semibold text-gray-400 uppercase mb-3">📞 Contacto</h2>
+              <div className="space-y-2 text-sm">
+                {incident.reporter_name && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <span>👤</span>
+                    <span>{incident.reporter_name}</span>
+                  </div>
+                )}
+                {incident.reporter_phone && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <span>📱</span>
+                    <a href={`tel:${incident.reporter_phone}`} className="text-red-600 hover:underline">
+                      {incident.reporter_phone}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Información */}
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
@@ -194,7 +221,6 @@ export default function IncidentDetailPage() {
           {isActive && (
             <div className="space-y-3">
               <VolunteerButton incident={incident} size="lg" />
-              <EscalateButton incident={incident} />
             </div>
           )}
 
@@ -216,6 +242,17 @@ export default function IncidentDetailPage() {
           >
             📤 Compartir incidente
           </button>
+
+          {/* Regresar al mapa */}
+          <Link
+            href="/"
+            className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Regresar al mapa
+          </Link>
 
           {/* Espacio inferior */}
           <div className="h-8" />

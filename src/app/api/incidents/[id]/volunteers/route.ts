@@ -35,7 +35,7 @@ export async function POST(
       );
     }
 
-    if (incident.status === 'resolved' || incident.status === 'escalated') {
+    if (incident.status === 'resuelto' || incident.status === 'escalado') {
       return NextResponse.json(
         { error: 'Este incidente ya no está activo' },
         { status: 400 }
@@ -55,7 +55,7 @@ export async function POST(
         device_id: body.device_id,
         display_name: body.display_name || null,
         abilities,
-        status: 'going',
+        status: 'en_camino',
       })
       .select()
       .single();

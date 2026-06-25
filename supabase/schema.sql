@@ -59,7 +59,7 @@ CREATE TABLE incidents (
   status        incident_status NOT NULL DEFAULT 'reportado',
 
   volunteer_count INTEGER NOT NULL DEFAULT 0,
-  max_volunteers  INTEGER NOT NULL DEFAULT 20,
+  max_volunteers  INTEGER NOT NULL DEFAULT 50,
 
   escalated_notes TEXT
 );

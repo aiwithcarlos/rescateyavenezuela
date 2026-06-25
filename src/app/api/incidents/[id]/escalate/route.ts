@@ -35,7 +35,7 @@ export async function POST(
       );
     }
 
-    if (incident.status === 'escalated') {
+    if (incident.status === 'escalado') {
       return NextResponse.json(
         { error: 'Este incidente ya fue escalado a Protección Civil' },
         { status: 400 }
@@ -46,7 +46,7 @@ export async function POST(
     const { data, error } = await supabase
       .from('incidents')
       .update({
-        status: 'escalated',
+        status: 'escalado',
         escalated_at: new Date().toISOString(),
         escalated_notes: body.notes || null,
         updated_at: new Date().toISOString(),

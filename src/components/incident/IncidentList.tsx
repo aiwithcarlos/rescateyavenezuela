@@ -1,16 +1,19 @@
 'use client';
 
-import { useApp } from '@/providers/AppProvider';
-import { useIncidents } from '@/hooks/useIncidents';
 import { IncidentCard } from './IncidentCard';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { EmptyState } from '@/components/ui/EmptyState';
+import type { Incident, LatLng } from '@/types';
 import Link from 'next/link';
 
-export function IncidentList() {
-  const { userLocation, filters } = useApp();
-  const { incidents, isLoading } = useIncidents(userLocation, filters.maxDistance, filters.types);
+interface IncidentListProps {
+  incidents: Incident[];
+  isLoading: boolean;
+  userLocation?: LatLng | null;
+}
 
+/** Componente presentacional — recibe datos vía props, no hace fetch ni suscripciones */
+export function IncidentList({ incidents, isLoading, userLocation }: IncidentListProps) {
   const filtered = incidents.filter(
     (inc) => inc.status === 'reportado' || inc.status === 'ayuda_en_camino'
   );
@@ -50,7 +53,7 @@ export function IncidentList() {
           <IncidentCard
             key={incident.id}
             incident={incident}
-            userLocation={userLocation}
+            userLocation={userLocation ?? null}
             compact
           />
         ))}

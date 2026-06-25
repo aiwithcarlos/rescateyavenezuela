@@ -1,12 +1,43 @@
 'use client';
 
 import useSWR from 'swr';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Incident, LatLng } from '@/types';
 import { buildIncidentQuery } from '@/lib/utils';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+// ── Canal de Supabase Realtime (singleton a nivel de módulo) ──────────
+// Se crea una sola vez y vive durante toda la sesión de la app.
+// Así React Strict Mode puede montar/desmontar componentes sin interferir.
+// ──────────────────────────────────────────────────────────────────────
+let realtimeChannel: ReturnType<typeof supabase.channel> | null = null;
+let onDataChange: (() => void) | null = null;
+
+function ensureRealtimeChannel(): void {
+  if (realtimeChannel) return;
+
+  realtimeChannel = supabase
+    .channel('incidents-realtime')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'incidents' },
+      () => {
+        onDataChange?.();
+      }
+    )
+    .subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        console.log('[Realtime] Conectado a canal de incidentes');
+      }
+      if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+        console.warn('[Realtime] Canal cerrado. Reconectando...');
+      }
+    });
+}
+
+// ── Hook ────────────────────────────────────────────────────────────
 
 interface UseIncidentsReturn {
   incidents: Incident[];
@@ -38,30 +69,21 @@ export function useIncidents(
     }
   );
 
-  // Suscribirse a cambios en tiempo real de Supabase
-  useEffect(() => {
-    const channel = supabase
-      .channel('incidents-realtime')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'incidents' },
-        () => {
-          mutate();
-        }
-      )
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('[Realtime] Conectado a canal de incidentes');
-        }
-        if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
-          console.warn('[Realtime] Canal cerrado. Reconectando...');
-        }
-      });
+  // Mantener la referencia a mutate actualizada para el callback del canal
+  const mutateRef = useRef(mutate);
+  mutateRef.current = mutate;
 
+  // El canal se crea una sola vez a nivel de módulo, sin depender del
+  // ciclo de vida de React. Así Strict Mode no causa colisiones.
+  useEffect(() => {
+    onDataChange = () => mutateRef.current();
+    ensureRealtimeChannel();
+
+    // Sin cleanup: el canal pertenece a la sesión, no al componente
     return () => {
-      supabase.removeChannel(channel);
+      onDataChange = null;
     };
-  }, [mutate]);
+  }, []);
 
   return {
     incidents: data?.incidents || [],

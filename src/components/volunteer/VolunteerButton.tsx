@@ -165,7 +165,8 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
     <>
       <button
         onClick={() => setShowAbilities(true)}
-        className={`${sizeClasses[size]} bg-red-600 text-white hover:bg-red-700`}
+        disabled={submitting}
+        className={`${sizeClasses[size]} bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-300 disabled:text-gray-400`}
       >
         Voy para allá
       </button>
@@ -207,7 +208,14 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
           disabled={submitting}
           className="w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-red-700 disabled:bg-gray-300 transition-all"
         >
-          {submitting ? 'Registrando...' : 'Confirmar'}
+          {submitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Registrando...
+            </span>
+          ) : (
+            'Confirmar'
+          )}
         </button>
       </Modal>
     </>

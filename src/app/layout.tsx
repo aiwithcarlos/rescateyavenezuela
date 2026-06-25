@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   description:
     "Mapa de incidentes activos para coordinar rescates tras el terremoto del 24 de junio de 2026 en Venezuela. Reporta incidentes o regístrate como voluntario.",
   applicationName: "RescateYA Venezuela",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   appleWebApp: {
     capable: true,
     title: "RescateYA Venezuela",

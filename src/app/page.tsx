@@ -9,6 +9,7 @@ import { IncidentList } from '@/components/incident/IncidentList';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { ErrorBanner } from '@/components/ui/ErrorBanner';
 import { useApp } from '@/providers/AppProvider';
+import { useIncidents } from '@/hooks/useIncidents';
 
 // Dynamic import para el mapa (Leaflet necesita el DOM)
 const IncidentMap = dynamic(
@@ -28,7 +29,8 @@ function MapSkeleton() {
 }
 
 export default function HomePage() {
-  const { locationError, retryLocation, isOnline } = useApp();
+  const { userLocation, filters, locationError, retryLocation, isOnline } = useApp();
+  const { incidents, isLoading } = useIncidents(userLocation, filters.maxDistance, filters.types);
 
   return (
     <div className="h-full flex flex-col">
@@ -56,14 +58,14 @@ export default function HomePage() {
       {/* Desktop: panel lateral derecho con lista */}
       <div className="hidden md:block fixed top-28 right-4 bottom-4 z-20 w-96">
         <div className="bg-white rounded-2xl shadow-xl h-full overflow-y-auto p-4">
-          <IncidentList />
+          <IncidentList incidents={incidents} isLoading={isLoading} userLocation={userLocation} />
         </div>
       </div>
 
       {/* Mobile: Bottom Sheet */}
       <div className="block md:hidden">
         <BottomSheet defaultHeight={40}>
-          <IncidentList />
+          <IncidentList incidents={incidents} isLoading={isLoading} userLocation={userLocation} />
         </BottomSheet>
       </div>
 

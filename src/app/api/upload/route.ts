@@ -53,8 +53,15 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Error uploading to Supabase Storage:', error);
+      // Si el bucket no existe, dar una pista
+      if (error.message?.includes('not found') || error.message?.includes('bucket')) {
+        return NextResponse.json(
+          { error: 'Bucket "incident-photos" no encontrado. Créalo en Supabase Dashboard > Storage.' },
+          { status: 500 }
+        );
+      }
       return NextResponse.json(
-        { error: 'Error al subir la imagen' },
+        { error: 'Error al subir la imagen: ' + error.message },
         { status: 500 }
       );
     }

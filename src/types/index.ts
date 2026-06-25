@@ -27,6 +27,8 @@ export interface Incident {
   resolved_at: string | null;
   escalated_at: string | null;
   device_id: string;
+  reporter_name: string | null;
+  reporter_phone: string | null;
   incident_type: IncidentType;
   description: string;
   photo_url: string | null;
@@ -65,7 +67,10 @@ export interface CreateIncidentPayload {
   latitude: number;
   longitude: number;
   address?: string;
-  photo_url?: string;
+  photo_url?: string | null;
+  reporter_name?: string | null;
+  reporter_phone?: string | null;
+  max_volunteers?: number;
 }
 
 export interface CreateVolunteerPayload {
