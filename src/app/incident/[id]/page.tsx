@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useApp } from '@/providers/AppProvider';
@@ -29,46 +29,32 @@ export default function IncidentDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchIncident() {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`/api/incidents/${id}`);
-        if (!res.ok) throw new Error('Incidente no encontrado');
+  const fetchIncident = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/incidents/${id}`);
+      if (res.ok) {
         const data = await res.json();
         setIncident(data.incident);
         setVolunteers(data.volunteers || []);
-      } catch (err: any) {
-        setError(err.message || 'Error al cargar el incidente');
-      } finally {
-        setLoading(false);
       }
+    } catch {
+      // Silencioso — los datos viejos son mejores que nada
     }
-
-    if (id) fetchIncident();
   }, [id]);
 
-  // Suscribirse a cambios en tiempo real para este incidente
   useEffect(() => {
     if (!id) return;
+    setLoading(true);
+    setError(null);
+    fetchIncident().finally(() => setLoading(false));
+  }, [id, fetchIncident]);
 
-    // Polling cada 15s para mantener datos frescos (fallback simple)
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch(`/api/incidents/${id}`);
-        if (res.ok) {
-          const data = await res.json();
-          setIncident(data.incident);
-          setVolunteers(data.volunteers || []);
-        }
-      } catch {
-        // Silencioso — los datos viejos son mejores que nada
-      }
-    }, 15000);
-
+  // Polling ligero cada 5s para mantener datos frescos
+  useEffect(() => {
+    if (!id) return;
+    const interval = setInterval(fetchIncident, 5000);
     return () => clearInterval(interval);
-  }, [id]);
+  }, [id, fetchIncident]);
 
   if (loading) {
     return (
@@ -220,7 +206,7 @@ export default function IncidentDetailPage() {
           {/* Acciones */}
           {isActive && (
             <div className="space-y-3">
-              <VolunteerButton incident={incident} size="lg" />
+              <VolunteerButton incident={incident} size="lg" onVolunteerChange={fetchIncident} />
             </div>
           )}
 

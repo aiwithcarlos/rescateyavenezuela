@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useApp } from '@/providers/AppProvider';
 import { useVolunteerStatus } from '@/hooks/useVolunteerStatus';
 import { Modal } from '@/components/ui/Modal';
@@ -11,10 +10,10 @@ import type { AbilityType, Incident } from '@/types';
 interface VolunteerButtonProps {
   incident: Incident;
   size?: 'sm' | 'lg';
+  onVolunteerChange?: () => void;
 }
 
-export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps) {
-  const router = useRouter();
+export function VolunteerButton({ incident, size = 'sm', onVolunteerChange }: VolunteerButtonProps) {
   const { deviceId, addVolunteer, updateVolunteerStatus } = useApp();
   const { volunteerId, status, loading } = useVolunteerStatus(incident.id, deviceId);
 
@@ -59,7 +58,7 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
       const { volunteer } = await res.json();
       addVolunteer(incident.id, volunteer.id);
       setShowAbilities(false);
-      router.refresh();
+      onVolunteerChange?.();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -92,7 +91,7 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
         updateVolunteerStatus(volunteerId, 'cancelado');
       }
 
-      router.refresh();
+      onVolunteerChange?.();
     } catch (err: any) {
       setError(err.message);
     } finally {
