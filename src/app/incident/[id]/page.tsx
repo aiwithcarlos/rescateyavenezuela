@@ -31,7 +31,9 @@ export default function IncidentDetailPage() {
 
   const fetchIncident = useCallback(async () => {
     try {
-      const res = await fetch(`/api/incidents/${id}`);
+      // cache: 'no-store' evita que el navegador devuelva datos cacheados
+      // al hacer clic en "Llegué al lugar" o "Confirmar"
+      const res = await fetch(`/api/incidents/${id}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         setIncident(data.incident);
