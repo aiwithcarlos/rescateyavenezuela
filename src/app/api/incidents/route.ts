@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
       );
     }
     if (
-      !['trapped', 'need_tools', 'need_machinery', 'elderly_disabled'].includes(
+      !['personas_atrapadas', 'necesitan_herramientas', 'necesitan_maquinaria', 'movilidad_reducida'].includes(
         body.incident_type
       )
     ) {
@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
         longitude: body.longitude,
         address: body.address || null,
         photo_url: body.photo_url || null,
-        status: 'reported',
+        status: 'reportado',
         volunteer_count: 0,
         max_volunteers: 20,
       })

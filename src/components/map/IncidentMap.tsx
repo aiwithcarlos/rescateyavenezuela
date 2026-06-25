@@ -70,7 +70,7 @@ export function IncidentMap({ onIncidentSelect }: IncidentMapProps) {
 
         {/* Marcadores de incidentes */}
         {incidents
-          .filter((inc) => inc.status === 'reported' || inc.status === 'help_on_way')
+          .filter((inc) => inc.status === 'reportado' || inc.status === 'ayuda_en_camino')
           .map((incident) => (
             <IncidentMarker
               key={incident.id}

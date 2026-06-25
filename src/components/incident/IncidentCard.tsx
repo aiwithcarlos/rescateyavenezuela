@@ -29,7 +29,7 @@ export function IncidentCard({ incident, userLocation, compact = false }: Incide
   const progressColor =
     volunteerPct >= 100 ? 'bg-red-500' : volunteerPct > 70 ? 'bg-yellow-500' : 'bg-green-500';
 
-  const isActive = incident.status === 'reported' || incident.status === 'help_on_way';
+  const isActive = incident.status === 'reportado' || incident.status === 'ayuda_en_camino';
 
   if (compact) {
     return (
@@ -43,11 +43,11 @@ export function IncidentCard({ incident, userLocation, compact = false }: Incide
               INCIDENT_TYPE_BG_LIGHT[incident.incident_type]
             }`}
           >
-            {incident.incident_type === 'trapped'
+            {incident.incident_type === 'personas_atrapadas'
               ? '🆘'
-              : incident.incident_type === 'need_tools'
+              : incident.incident_type === 'necesitan_herramientas'
               ? '🪣'
-              : incident.incident_type === 'need_machinery'
+              : incident.incident_type === 'necesitan_maquinaria'
               ? '🏗️'
               : '🦽'}
           </div>

@@ -12,7 +12,7 @@ export function IncidentList() {
   const { incidents, isLoading } = useIncidents(userLocation, filters.maxDistance, filters.types);
 
   const filtered = incidents.filter(
-    (inc) => inc.status === 'reported' || inc.status === 'help_on_way'
+    (inc) => inc.status === 'reportado' || inc.status === 'ayuda_en_camino'
   );
 
   return (

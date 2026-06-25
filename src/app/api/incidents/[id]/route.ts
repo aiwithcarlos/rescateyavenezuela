@@ -76,7 +76,7 @@ export async function PATCH(
 
     if (body.status) {
       if (
-        !['reported', 'help_on_way', 'resolved', 'escalated'].includes(
+        !['reportado', 'ayuda_en_camino', 'resuelto', 'escalado'].includes(
           body.status
         )
       ) {
@@ -87,10 +87,10 @@ export async function PATCH(
       }
       updates.status = body.status;
 
-      if (body.status === 'resolved') {
+      if (body.status === 'resuelto') {
         updates.resolved_at = new Date().toISOString();
       }
-      if (body.status === 'escalated') {
+      if (body.status === 'escalado') {
         updates.escalated_at = new Date().toISOString();
       }
     }

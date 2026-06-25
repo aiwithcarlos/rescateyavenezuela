@@ -21,9 +21,9 @@ export async function PATCH(
       );
     }
 
-    if (!body.status || !['going', 'arrived', 'cancelled'].includes(body.status)) {
+    if (!body.status || !['en_camino', 'llego_al_lugar', 'cancelado'].includes(body.status)) {
       return NextResponse.json(
-        { error: 'Estado inválido. Debe ser: going, arrived, o cancelled' },
+        { error: 'Estado inválido. Debe ser: en_camino, llego_al_lugar, o cancelado' },
         { status: 400 }
       );
     }
@@ -55,7 +55,7 @@ export async function PATCH(
       updated_at: new Date().toISOString(),
     };
 
-    if (body.status === 'arrived') {
+    if (body.status === 'llego_al_lugar') {
       updates.arrived_at = new Date().toISOString();
     }
 

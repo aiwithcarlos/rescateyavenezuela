@@ -24,7 +24,7 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
   const [error, setError] = useState<string | null>(null);
 
   const isFull = incident.volunteer_count >= incident.max_volunteers;
-  const isResolved = incident.status === 'resolved' || incident.status === 'escalated';
+  const isResolved = incident.status === 'resuelto' || incident.status === 'escalado';
 
   const toggleAbility = (ability: AbilityType) => {
     setSelectedAbilities((prev) =>
@@ -67,7 +67,7 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
     }
   };
 
-  const handleStatusUpdate = async (newStatus: 'arrived' | 'cancelled') => {
+  const handleStatusUpdate = async (newStatus: 'llego_al_lugar' | 'cancelado') => {
     if (!volunteerId) return;
 
     setSubmitting(true);
@@ -88,8 +88,8 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
         throw new Error(data.error || 'Error al actualizar estado');
       }
 
-      if (newStatus === 'cancelled') {
-        updateVolunteerStatus(volunteerId, 'cancelled');
+      if (newStatus === 'cancelado') {
+        updateVolunteerStatus(volunteerId, 'cancelado');
       }
 
       router.refresh();
@@ -112,19 +112,19 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
   if (isResolved) {
     return (
       <button disabled className={`${sizeClasses[size]} bg-gray-200 text-gray-500`}>
-        {incident.status === 'resolved' ? '✓ Resuelto' : 'Derivado a Protección Civil'}
+        {incident.status === 'resuelto' ? '✓ Resuelto' : 'Derivado a Protección Civil'}
       </button>
     );
   }
 
   // Estado: usuario ya es voluntario
   if (status && volunteerId) {
-    if (status === 'going') {
+    if (status === 'en_camino') {
       return (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <button
-              onClick={() => handleStatusUpdate('arrived')}
+              onClick={() => handleStatusUpdate('llego_al_lugar')}
               disabled={submitting}
               className={`${sizeClasses[size]} bg-green-600 text-white hover:bg-green-700`}
             >
@@ -132,7 +132,7 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
             </button>
           </div>
           <button
-            onClick={() => handleStatusUpdate('cancelled')}
+            onClick={() => handleStatusUpdate('cancelado')}
             disabled={submitting}
             className="text-xs text-gray-400 hover:text-red-500 underline"
           >
@@ -142,7 +142,7 @@ export function VolunteerButton({ incident, size = 'sm' }: VolunteerButtonProps)
       );
     }
 
-    if (status === 'arrived') {
+    if (status === 'llego_al_lugar') {
       return (
         <button disabled className={`${sizeClasses[size]} bg-green-100 text-green-700 border border-green-300`}>
           ✓ Asistencia completada

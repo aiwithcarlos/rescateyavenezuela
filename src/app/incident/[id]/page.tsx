@@ -107,7 +107,7 @@ export default function IncidentDetailPage() {
       )
     : null;
 
-  const isActive = incident.status === 'reported' || incident.status === 'help_on_way';
+  const isActive = incident.status === 'reportado' || incident.status === 'ayuda_en_camino';
 
   return (
     <div className="h-full flex flex-col bg-gray-50">

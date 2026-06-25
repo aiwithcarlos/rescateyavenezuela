@@ -84,7 +84,7 @@ export function ReportForm() {
   const isValid =
     incidentType && description.trim().length >= 10;
 
-  const types: IncidentType[] = ['trapped', 'need_tools', 'need_machinery', 'elderly_disabled'];
+  const types: IncidentType[] = ['personas_atrapadas', 'necesitan_herramientas', 'necesitan_maquinaria', 'movilidad_reducida'];
 
   return (
     <div className="flex flex-col min-h-screen">

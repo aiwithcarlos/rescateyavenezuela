@@ -19,8 +19,8 @@ export function VolunteerList({ volunteers }: VolunteerListProps) {
     );
   }
 
-  const active = volunteers.filter((v) => v.status === 'going');
-  const arrived = volunteers.filter((v) => v.status === 'arrived');
+  const active = volunteers.filter((v) => v.status === 'en_camino');
+  const arrived = volunteers.filter((v) => v.status === 'llego_al_lugar');
 
   return (
     <div className="space-y-4">

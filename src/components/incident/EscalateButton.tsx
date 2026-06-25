@@ -17,7 +17,7 @@ export function EscalateButton({ incident }: EscalateButtonProps) {
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const alreadyEscalated = incident.status === 'escalated';
+  const alreadyEscalated = incident.status === 'escalado';
 
   const handleEscalate = async () => {
     setSubmitting(true);

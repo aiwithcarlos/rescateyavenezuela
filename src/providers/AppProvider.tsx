@@ -80,7 +80,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const updateVolunteerStatus = useCallback(
     (volunteerId: string, status: string) => {
-      if (status === 'cancelled') {
+      if (status === 'cancelado') {
         setVolunteerMap((prev) => {
           const next = { ...prev };
           Object.keys(next).forEach((key) => {

@@ -7,8 +7,8 @@ import type { IncidentType, AbilityType } from '@/types';
 export function FilterBar() {
   const { filters, toggleTypeFilter, toggleAbilityFilter, setMaxDistance } = useApp();
 
-  const types: IncidentType[] = ['trapped', 'need_tools', 'need_machinery', 'elderly_disabled'];
-  const abilities: AbilityType[] = ['arms', 'shovel', 'vehicle', 'machinery'];
+  const types: IncidentType[] = ['personas_atrapadas', 'necesitan_herramientas', 'necesitan_maquinaria', 'movilidad_reducida'];
+  const abilities: AbilityType[] = ['brazos', 'pala_herramientas', 'vehiculo', 'maquinaria'];
 
   return (
     <div className="fixed top-14 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100 px-3 py-2">

@@ -2,20 +2,20 @@
 // Tipos de incidente
 // ============================================
 export type IncidentType =
-  | 'trapped'
-  | 'need_tools'
-  | 'need_machinery'
-  | 'elderly_disabled';
+  | 'personas_atrapadas'
+  | 'necesitan_herramientas'
+  | 'necesitan_maquinaria'
+  | 'movilidad_reducida';
 
 export type IncidentStatus =
-  | 'reported'
-  | 'help_on_way'
-  | 'resolved'
-  | 'escalated';
+  | 'reportado'
+  | 'ayuda_en_camino'
+  | 'resuelto'
+  | 'escalado';
 
-export type VolunteerStatus = 'going' | 'arrived' | 'cancelled';
+export type VolunteerStatus = 'en_camino' | 'llego_al_lugar' | 'cancelado';
 
-export type AbilityType = 'arms' | 'shovel' | 'vehicle' | 'machinery';
+export type AbilityType = 'brazos' | 'pala_herramientas' | 'vehiculo' | 'maquinaria';
 
 // ============================================
 // Entidades principales
