@@ -45,6 +45,9 @@ CREATE TABLE incidents (
 
   device_id     TEXT NOT NULL,
 
+  reporter_name  TEXT,
+  reporter_phone TEXT,
+
   incident_type incident_type NOT NULL,
   description   TEXT NOT NULL DEFAULT '',
   photo_url     TEXT,
@@ -156,6 +159,12 @@ CREATE POLICY "Anyone can update volunteers"
   ON volunteers FOR UPDATE
   USING (true)
   WITH CHECK (true);
+
+-- =============================================
+-- MIGRACIÓN: nuevos campos (si la tabla ya existe)
+-- =============================================
+-- ALTER TABLE incidents ADD COLUMN reporter_name TEXT;
+-- ALTER TABLE incidents ADD COLUMN reporter_phone TEXT;
 
 -- =============================================
 -- HABILITAR REALTIME (ejecutar después)
