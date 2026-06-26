@@ -48,7 +48,7 @@ export default function RootLayout({
       <body className="h-full flex flex-col bg-gray-50">
         <AppProvider>
           {children}
-          <Footer />
+          
         </AppProvider>
       </body>
     </html>

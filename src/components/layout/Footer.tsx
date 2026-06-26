@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 px-4 py-6 mt-auto">
+    <footer className="bg-gray-900 text-gray-300 px-4 py-6">
       <div className="max-w-2xl mx-auto space-y-5">
         {/* Título */}
         <div className="text-center">

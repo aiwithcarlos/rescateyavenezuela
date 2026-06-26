@@ -19,6 +19,7 @@ import {
 } from '@/lib/constants';
 import { formatRelativeTime, formatDistance, haversineDistance } from '@/lib/utils';
 import type { Incident, Volunteer } from '@/types';
+import { Footer } from '@/components/layout/Footer';
 
 export default function IncidentDetailPage() {
   const params = useParams();
@@ -263,6 +264,7 @@ export default function IncidentDetailPage() {
           {/* Espacio inferior */}
           <div className="h-8" />
         </div>
+        <Footer />
       </div>
     </div>
   );

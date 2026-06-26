@@ -17,10 +17,10 @@ export function Header() {
                         </span>
                     </div>
                     <div>
-                        <h1 className="text-sm font-bold text-gray-900 leading-tight">
+                        <h1 className="text-lg font-bold text-gray-900 leading-tight">
                             RescateYA Venezuela
                         </h1>
-                        <p className="text-[10px] text-gray-500 leading-tight">
+                        <p className="text-sm text-gray-500 leading-tight">
                             Mapa de incidentes activos
                         </p>
                     </div>
@@ -29,7 +29,7 @@ export function Header() {
                 {!isReportPage && (
                     <Link
                         href="/report"
-                        className="flex items-center gap-1.5 bg-red-600 text-white text-xs font-semibold px-3 py-2 rounded-full shadow-md hover:bg-red-700 active:scale-95 transition-all"
+                        className="flex items-center gap-1.5 bg-red-600 text-white text-sm font-semibold px-3 py-2 rounded-full shadow-md hover:bg-red-700 active:scale-95 transition-all"
                     >
                         <svg
                             className="w-4 h-4"
@@ -48,6 +48,7 @@ export function Header() {
                     </Link>
                 )}
             </div>
+            
         </header>
     );
 }

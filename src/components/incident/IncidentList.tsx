@@ -23,7 +23,7 @@ export function IncidentList({
     );
 
     return (
-        <div className="space-y-3 mt-4 pb-4">
+        <div className="space-y-3 mt-5 pb-4">
             <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-gray-700">
                     {filtered.length} incidente
