@@ -11,8 +11,6 @@ import {
     INCIDENT_TYPE_BG_LIGHT,
 } from '@/lib/constants';
 import {
-    formatDistance,
-    haversineDistance,
     formatRelativeTime,
 } from '@/lib/utils';
 import type { Incident, IncidentType } from '@/types';
@@ -36,6 +34,15 @@ export default function VoluntarioPage() {
     const [selectedTypes, setSelectedTypes] = useState<Set<IncidentType>>(
         new Set(),
     );
+    const [counts, setCounts] = useState<Record<string, number>>({});
+
+    // Obtener conteos por tipo
+    useEffect(() => {
+        fetch('/api/incidents/counts')
+            .then((res) => res.json())
+            .then((data) => setCounts(data.counts || {}))
+            .catch(() => {});
+    }, []);
 
     const fetchIncidents = useCallback(async () => {
         setLoading(true);
@@ -43,6 +50,7 @@ export default function VoluntarioPage() {
             const params = new URLSearchParams();
             params.set('page', page.toString());
             params.set('limit', PAGE_SIZE.toString());
+            params.set('status', 'reportado,ayuda_en_camino,resuelto,escalado');
             if (selectedTypes.size > 0) {
                 params.set('type', [...selectedTypes].join(','));
             }
@@ -71,7 +79,7 @@ export default function VoluntarioPage() {
             else next.add(type);
             return next;
         });
-        setPage(1); // Reset a primera página al filtrar
+        setPage(1);
     };
 
     return (
@@ -99,7 +107,7 @@ export default function VoluntarioPage() {
                             }`}
                         >
                             {INCIDENT_TYPE_ICONS[type]}{' '}
-                            {INCIDENT_TYPE_LABELS[type]}
+                            {INCIDENT_TYPE_LABELS[type]} ({counts[type] ?? 0})
                         </button>
                     ))}
                 </div>
@@ -121,70 +129,68 @@ export default function VoluntarioPage() {
                     <div className="text-center py-12">
                         <p className="text-4xl mb-3">📋</p>
                         <p className="text-sm text-gray-500">
-                            No hay incidentes activos
+                            No hay incidentes reportados
                         </p>
                     </div>
                 )}
 
                 {!loading &&
-                    incidents.map((incident) => (
-                        <Link
-                            key={incident.id}
-                            href={`/incident/${incident.id}`}
-                            className="block bg-white border border-gray-100 rounded-xl p-3 shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
-                        >
-                            <div className="flex items-start gap-3">
-                                <div
-                                    className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg ${
-                                        INCIDENT_TYPE_BG_LIGHT[
-                                            incident.incident_type
-                                        ]
-                                    }`}
-                                >
-                                    {
-                                        INCIDENT_TYPE_ICONS[
-                                            incident.incident_type
-                                        ]
-                                    }
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <span className="text-xs font-semibold text-gray-500">
-                                        {
-                                            INCIDENT_TYPE_LABELS[
-                                                incident.incident_type
-                                            ]
-                                        }
-                                    </span>
-                                    <p className="text-sm text-gray-800 line-clamp-2 mt-0.5">
-                                        {incident.description ||
-                                            'Sin descripción'}
-                                    </p>
-                                    <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
-                                        <span>
-                                            🕐{' '}
-                                            {formatRelativeTime(
-                                                incident.created_at,
+                    incidents.map((incident) => {
+                        const totalVolunteers = incident.volunteer_count + incident.arrived_count;
+                        const isComplete = totalVolunteers >= incident.max_volunteers;
+                        const isActive = incident.status === 'reportado' || incident.status === 'ayuda_en_camino';
+
+                        return (
+                            <Link
+                                key={incident.id}
+                                href={`/incident/${incident.id}`}
+                                className={`block bg-white border border-gray-100 rounded-xl p-3 shadow-sm hover:shadow-md active:scale-[0.98] transition-all ${
+                                    !isActive ? 'opacity-75' : ''
+                                }`}
+                            >
+                                <div className="flex items-start gap-3">
+                                    <div
+                                        className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg ${
+                                            INCIDENT_TYPE_BG_LIGHT[incident.incident_type]
+                                        }`}
+                                    >
+                                        {INCIDENT_TYPE_ICONS[incident.incident_type]}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs font-semibold text-gray-500">
+                                                {INCIDENT_TYPE_LABELS[incident.incident_type]}
+                                            </span>
+                                            {isComplete && (
+                                                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-green-700 bg-green-50 border border-green-200 px-1.5 py-0.5 rounded-full">
+                                                    ✓ Voluntarios completos
+                                                </span>
                                             )}
-                                        </span>
-                                        <span>
-                                            👥{' '}
-                                            {incident.volunteer_count +
-                                                incident.arrived_count}
-                                            /
-                                            {incident.max_volunteers >= 999
-                                                ? '∞'
-                                                : incident.max_volunteers}
+                                            {!isActive && !isComplete && (
+                                                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-gray-500 bg-gray-100 border border-gray-200 px-1.5 py-0.5 rounded-full">
+                                                    Completado
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-sm text-gray-800 line-clamp-2 mt-0.5">
+                                            {incident.description?.replace(/^Insumos solicitados:.*?\. /, '') || 'Sin descripción'}
+                                        </p>
+                                        <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
+                                            <span>🕐 {formatRelativeTime(incident.created_at)}</span>
+                                            <span>
+                                                👥 {totalVolunteers}/{incident.max_volunteers >= 999 ? '∞' : incident.max_volunteers}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="shrink-0 self-center">
+                                        <span className="inline-flex items-center gap-1 bg-red-600 text-white text-xs font-semibold px-2.5 py-1.5 rounded-full">
+                                            Ver incidente
                                         </span>
                                     </div>
                                 </div>
-                                <div className="shrink-0 self-center">
-                                    <span className="inline-flex items-center gap-1 bg-red-600 text-white text-xs font-semibold px-2.5 py-1.5 rounded-full">
-                                        Ver incidente
-                                    </span>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        );
+                    })}
             </div>
 
             {/* Paginación */}
@@ -201,9 +207,7 @@ export default function VoluntarioPage() {
                         Página {page} de {totalPages} ({total} incidentes)
                     </span>
                     <button
-                        onClick={() =>
-                            setPage((p) => Math.min(totalPages, p + 1))
-                        }
+                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
                         className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
                     >
@@ -218,18 +222,8 @@ export default function VoluntarioPage() {
                     href="/"
                     className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5"
                 >
-                    <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                        />
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
                     Regresar al mapa
                 </Link>
