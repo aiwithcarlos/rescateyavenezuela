@@ -17,26 +17,33 @@ export async function GET(request: NextRequest) {
         const typeParam = searchParams.get('type'); // comma-separated
         const statusParam =
             searchParams.get('status') || 'reportado,ayuda_en_camino';
+        const page = parseInt(searchParams.get('page') || '1');
+        const limit = parseInt(searchParams.get('limit') || '10');
+        const offset = (page - 1) * limit;
 
-        // Construir query base
-        let query = supabase
+        // Construir query base (con count para paginación)
+        let baseQuery = supabase
             .from('incidents')
-            .select('*')
+            .select('*', { count: 'exact' })
             .order('created_at', { ascending: false });
 
         // Filtrar por estado
         if (statusParam) {
             const statuses = statusParam.split(',').map((s) => s.trim());
-            query = query.in('status', statuses);
+            baseQuery = baseQuery.in('status', statuses);
         }
 
         // Filtrar por tipo
         if (typeParam) {
             const types = typeParam.split(',').map((t) => t.trim());
-            query = query.in('incident_type', types);
+            baseQuery = baseQuery.in('incident_type', types);
         }
 
-        const { data, error } = await query;
+        // Obtener total antes de paginar
+        const { count: totalCount } = await baseQuery;
+
+        // Aplicar paginación
+        const { data, error } = await baseQuery.range(offset, offset + limit - 1);
 
         if (error) {
             console.error('Error fetching incidents:', error);
@@ -69,7 +76,13 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        return NextResponse.json({ incidents, total: incidents.length });
+        return NextResponse.json({
+            incidents,
+            total: totalCount || incidents.length,
+            page,
+            limit,
+            totalPages: Math.ceil((totalCount || incidents.length) / limit),
+        });
     } catch (err) {
         console.error('Unexpected error in GET /api/incidents:', err);
         return NextResponse.json(
