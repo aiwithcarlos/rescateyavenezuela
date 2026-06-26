@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useApp } from '@/providers/AppProvider';
 import {
     INCIDENT_TYPE_LABELS,
@@ -14,7 +13,6 @@ import Link from 'next/link';
 export function FilterBar() {
     const { filters, toggleTypeFilter, toggleAbilityFilter, setMaxDistance } =
         useApp();
-    const [showDescModal, setShowDescModal] = useState(false);
 
     const types: IncidentType[] = [
         'personas_atrapadas',
@@ -61,53 +59,13 @@ export function FilterBar() {
 
     return (
         <div className="fixed top-14 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100 px-3 py-1.5 space-y-1">
-            {/* Banner descripción — desktop: completo, mobile: truncado */}
-            <div className="bg-gradient-to-r from-red-50 to-blue-50 border border-red-100 rounded-xl px-3 py-2">
-                {/* Desktop: texto completo + botón */}
-                <div className="hidden md:block">
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                        {descText}
-                    </p>
-                    {volunteerBtn}
-                </div>
-
-                {/* Mobile: truncado con "ver más" */}
-                <div className="md:hidden">
-                    <p className="text-[14px] text-gray-700 leading-relaxed line-clamp-2">
-                        {descText}
-                    </p>
-                    <button
-                        onClick={() => setShowDescModal(true)}
-                        className="text-xs font-semibold text-red-600 hover:underline mt-0.5"
-                    >
-                        Ver más...
-                    </button>
-                </div>
+            {/* Banner descripción — solo desktop */}
+            <div className="hidden md:block bg-gradient-to-r from-red-50 to-blue-50 border border-red-100 rounded-xl px-3 py-2">
+                <p className="text-sm text-gray-700 leading-relaxed">
+                    {descText}
+                </p>
+                {volunteerBtn}
             </div>
-
-            {/* Modal mobile: descripción completa + botón */}
-            {showDescModal && (
-                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center md:hidden px-4" onClick={() => setShowDescModal(false)}>
-                    <div
-                        className="bg-white rounded-2xl px-5 py-5 w-full max-w-sm max-h-[80vh] overflow-y-auto"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-base font-bold text-gray-900">RescateYA Venezuela</h3>
-                            <button
-                                onClick={() => setShowDescModal(false)}
-                                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"
-                            >
-                                ✕
-                            </button>
-                        </div>
-                        <p className="text-sm text-gray-700 leading-relaxed">
-                            {descText}
-                        </p>
-                        {volunteerBtn}
-                    </div>
-                </div>
-            )}
 
             {/* Fila 1: Filtrar por Necesidad */}
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
