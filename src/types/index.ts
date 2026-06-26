@@ -5,7 +5,8 @@ export type IncidentType =
   | 'personas_atrapadas'
   | 'necesitan_herramientas'
   | 'necesitan_maquinaria'
-  | 'movilidad_reducida';
+  | 'movilidad_reducida'
+  | 'insumos_medicos_y_alimentos';
 
 export type IncidentStatus =
   | 'reportado'

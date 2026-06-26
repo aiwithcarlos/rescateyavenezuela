@@ -13,6 +13,7 @@ export const INCIDENT_TYPE_LABELS: Record<IncidentType, string> = {
     necesitan_herramientas: 'Necesitan brazos y herramientas',
     necesitan_maquinaria: 'Se necesita maquinaria',
     movilidad_reducida: 'Personas mayores o con movilidad reducida',
+    insumos_medicos_y_alimentos: 'Insumos médicos y alimentos',
 };
 
 export const INCIDENT_TYPE_SHORT: Record<IncidentType, string> = {
@@ -20,6 +21,7 @@ export const INCIDENT_TYPE_SHORT: Record<IncidentType, string> = {
     necesitan_herramientas: 'Herramientas',
     necesitan_maquinaria: 'Maquinaria',
     movilidad_reducida: 'Movilidad reducida',
+    insumos_medicos_y_alimentos: 'Insumos médicos',
 };
 
 export const INCIDENT_STATUS_LABELS: Record<IncidentStatus, string> = {
@@ -50,6 +52,7 @@ export const INCIDENT_TYPE_COLORS: Record<IncidentType, string> = {
     necesitan_herramientas: '#EA580C', // orange-600
     necesitan_maquinaria: '#1F2937', // gray-800
     movilidad_reducida: '#2563EB', // blue-600
+    insumos_medicos_y_alimentos: '#059669', // emerald-600
 };
 
 export const INCIDENT_TYPE_BG: Record<IncidentType, string> = {
@@ -57,6 +60,7 @@ export const INCIDENT_TYPE_BG: Record<IncidentType, string> = {
     necesitan_herramientas: 'bg-orange-600',
     necesitan_maquinaria: 'bg-gray-800',
     movilidad_reducida: 'bg-blue-600',
+    insumos_medicos_y_alimentos: 'bg-emerald-600',
 };
 
 export const INCIDENT_TYPE_BG_LIGHT: Record<IncidentType, string> = {
@@ -64,6 +68,7 @@ export const INCIDENT_TYPE_BG_LIGHT: Record<IncidentType, string> = {
     necesitan_herramientas: 'bg-orange-50 text-orange-700 border-orange-200',
     necesitan_maquinaria: 'bg-gray-100 text-gray-700 border-gray-200',
     movilidad_reducida: 'bg-blue-50 text-blue-700 border-blue-200',
+    insumos_medicos_y_alimentos: 'bg-emerald-50 text-emerald-700 border-emerald-200',
 };
 
 export const ABILITY_COLORS: Record<AbilityType, string> = {
@@ -101,6 +106,8 @@ export const INCIDENT_TYPE_DESCRIPTIONS: Record<IncidentType, string> = {
         'Se requiere maquinaria pesada: retroexcavadora, grúa, gato hidráulico, equipo de corte. Los voluntarios sin maquinaria no deben acudir.',
     movilidad_reducida:
         'Personas mayores, en silla de ruedas o con movilidad reducida que necesitan ayuda para evacuar un edificio dañado.',
+    insumos_medicos_y_alimentos:
+        'Se necesitan insumos médicos, medicinas, alimentos no perecederos y artículos de primera necesidad para los damnificados.',
 };
 
 // ============================================
@@ -111,6 +118,7 @@ export const INCIDENT_TYPE_ICONS: Record<IncidentType, string> = {
     necesitan_herramientas: '🪣',
     necesitan_maquinaria: '🏗️',
     movilidad_reducida: '🦽',
+    insumos_medicos_y_alimentos: '🏥',
 };
 
 export const ABILITY_ICONS: Record<AbilityType, string> = {

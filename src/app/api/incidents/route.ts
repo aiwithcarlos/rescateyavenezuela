@@ -112,6 +112,7 @@ export async function POST(request: NextRequest) {
                 'necesitan_herramientas',
                 'necesitan_maquinaria',
                 'movilidad_reducida',
+                'insumos_medicos_y_alimentos',
             ].includes(body.incident_type)
         ) {
             return NextResponse.json(

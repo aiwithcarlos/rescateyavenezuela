@@ -15,6 +15,33 @@ import type { IncidentType, LatLng } from '@/types';
 
 type FormStep = 'location' | 'type' | 'details';
 
+const MEDICAL_SUPPLIES = [
+    'Agua potable',
+    'Alcohol',
+    'Agua oxigenada',
+    'Gasas',
+    'Vendas',
+    'Jeringas',
+    'Guantes quirúrgicos',
+    'Mascarillas',
+    'Analgésicos',
+    'Antibióticos',
+    'Antiinflamatorios',
+    'Suero fisiológico',
+    'Pañales',
+    'Toallas sanitarias',
+    'Enlatados',
+    'Leche en polvo',
+    'Frutas',
+    'Sábanas o cobijas',
+    'Ropa',
+    'Zapatos',
+    'Linternas',
+    'Pilas',
+    'Cargadores portátiles',
+    'Carpa o toldo',
+];
+
 export function ReportForm() {
     const router = useRouter();
     const { deviceId, userLocation } = useApp();
@@ -28,7 +55,8 @@ export function ReportForm() {
     const [reporterName, setReporterName] = useState('');
     const [reporterPhone, setReporterPhone] = useState('');
     const [address, setAddress] = useState('');
-    const [volunteersNeeded, setVolunteersNeeded] = useState(2);
+    const [volunteersNeeded, setVolunteersNeeded] = useState(999);
+    const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
     const [error, setError] = useState<string | null>(null);
 
     // Usar la ubicación del GPS por defecto, o Caracas
@@ -68,10 +96,16 @@ export function ReportForm() {
             }
 
             // 2. Crear incidente
+            // Si hay tags seleccionados, agregarlos al inicio de la descripción
+            const tagsText =
+                selectedTags.size > 0
+                    ? 'Insumos solicitados: ' + [...selectedTags].join(', ') + '. '
+                    : '';
+            const fullDescription = tagsText + description;
             const payload = {
                 device_id: deviceId,
                 incident_type: incidentType,
-                description,
+                description: fullDescription,
                 latitude: location?.latitude || defaultLat,
                 longitude: location?.longitude || defaultLng,
                 address: address.trim() || null,
@@ -120,7 +154,17 @@ export function ReportForm() {
         'necesitan_herramientas',
         'necesitan_maquinaria',
         'movilidad_reducida',
+        'insumos_medicos_y_alimentos',
     ];
+
+    const toggleTag = (tag: string) => {
+        setSelectedTags((prev) => {
+            const next = new Set(prev);
+            if (next.has(tag)) next.delete(tag);
+            else next.add(tag);
+            return next;
+        });
+    };
 
     return (
         <div className="flex flex-col">
@@ -256,6 +300,36 @@ export function ReportForm() {
                             {description.length < 10 ? '(mínimo 10)' : ''}
                         </p>
                     </div>
+
+                    {/* Tag selector para insumos médicos */}
+                    {incidentType === 'insumos_medicos_y_alimentos' && (
+                        <div className="mb-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                Selecciona los insumos que necesitas
+                            </label>
+                            <div className="flex flex-wrap gap-1.5">
+                                {MEDICAL_SUPPLIES.map((tag) => (
+                                    <button
+                                        key={tag}
+                                        type="button"
+                                        onClick={() => toggleTag(tag)}
+                                        className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all border ${
+                                            selectedTags.has(tag)
+                                                ? 'bg-emerald-600 text-white border-emerald-600'
+                                                : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-300'
+                                        }`}
+                                    >
+                                        {tag}
+                                    </button>
+                                ))}
+                            </div>
+                            {selectedTags.size > 0 && (
+                                <p className="text-xs text-emerald-700 mt-2">
+                                    {selectedTags.size} insumo{selectedTags.size !== 1 ? 's' : ''} seleccionado{selectedTags.size !== 1 ? 's' : ''}
+                                </p>
+                            )}
+                        </div>
+                    )}
 
                     {/* Dirección */}
                     <div className="mb-4">

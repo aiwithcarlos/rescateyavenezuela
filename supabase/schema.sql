@@ -10,7 +10,8 @@ CREATE TYPE incident_type AS ENUM (
   'personas_atrapadas',
   'necesitan_herramientas',
   'necesitan_maquinaria',
-  'movilidad_reducida'
+  'movilidad_reducida',
+  'insumos_medicos_y_alimentos'
 );
 
 CREATE TYPE incident_status AS ENUM (
@@ -205,6 +206,11 @@ CREATE POLICY "Anyone can update volunteers"
 -- =============================================
 -- ALTER TABLE incidents ADD COLUMN reporter_name TEXT;
 -- ALTER TABLE incidents ADD COLUMN reporter_phone TEXT;
+
+-- =============================================
+-- MIGRACIÓN: nuevo tipo de incidente (ejecutar si ya existe el ENUM)
+-- =============================================
+-- ALTER TYPE incident_type ADD VALUE 'insumos_medicos_y_alimentos';
 
 -- =============================================
 -- HABILITAR REALTIME (ejecutar después)
