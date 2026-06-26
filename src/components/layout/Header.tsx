@@ -10,7 +10,7 @@ export function Header() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 safe-area-top">
             <div className="flex items-center justify-between px-4 h-14">
-                <div className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center">
                         <span className="text-white text-sm font-bold">
                             RYV
@@ -24,7 +24,7 @@ export function Header() {
                             Mapa de incidentes activos
                         </p>
                     </div>
-                </div>
+                </Link>
 
                 {!isReportPage && (
                     <Link
