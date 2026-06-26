@@ -50,7 +50,7 @@ export function IncidentMap({ onIncidentSelect }: IncidentMapProps) {
     : [10.5000, -66.8500]; // Caracas centro
 
   return (
-    <div className="absolute inset-0 top-[13.5rem]">
+    <div className="absolute inset-0 top-[8.5rem]">
       <MapContainer
         center={defaultCenter}
         zoom={14}
