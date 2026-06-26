@@ -24,17 +24,6 @@ export function IncidentList({
 
     return (
         <div className="space-y-3 mt-4 pb-4">
-            {/* Descripción de la plataforma */}
-            <div className="bg-red-50 border border-red-100 rounded-xl p-3">
-                <p className="text-xs text-gray-700 leading-relaxed">
-                    Mapa de incidentes activos para coordinar ayuda tras el
-                    terremoto. Si necesitas asistencia,{' '}
-                    <strong>reporta un incidente</strong>. Si puedes ayudar,
-                    elige un incidente cercano y{' '}
-                    <strong>regístrate como voluntario</strong>.
-                </p>
-            </div>
-
             <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-gray-700">
                     {filtered.length} incidente
