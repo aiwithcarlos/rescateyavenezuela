@@ -19,6 +19,7 @@ export function VolunteerButton({ incident, size = 'sm', onVolunteerChange }: Vo
 
   const [showAbilities, setShowAbilities] = useState(false);
   const [selectedAbilities, setSelectedAbilities] = useState<AbilityType[]>([]);
+  const [volunteerName, setVolunteerName] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +48,7 @@ export function VolunteerButton({ incident, size = 'sm', onVolunteerChange }: Vo
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           device_id: deviceId,
+          display_name: volunteerName.trim() || null,
           abilities: selectedAbilities,
         }),
       });
@@ -177,6 +179,20 @@ export function VolunteerButton({ incident, size = 'sm', onVolunteerChange }: Vo
         onClose={() => setShowAbilities(false)}
         title="¿Con qué puedes ayudar?"
       >
+        {/* Nombre del voluntario */}
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Tu nombre y apellido
+          </label>
+          <input
+            type="text"
+            value={volunteerName}
+            onChange={(e) => setVolunteerName(e.target.value)}
+            placeholder="Ej: Andrés López"
+            className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+          />
+        </div>
+
         <div className="space-y-3 mb-4">
           {(Object.entries(ABILITY_LABELS) as [AbilityType, string][]).map(([key, label]) => (
             <button
