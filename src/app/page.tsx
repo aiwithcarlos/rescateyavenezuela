@@ -40,7 +40,7 @@ export default function HomePage() {
       <FilterBar />
 
       {/* Botón Quiero ser voluntario */}
-      <div className="fixed bottom-6 left-0 right-0 z-30 px-4 md:hidden">
+      <div className="fixed bottom-20 left-0 right-0 z-30 px-4">
         <Link
           href="/voluntario"
           className="w-full py-3 bg-green-600 text-white text-sm font-bold rounded-xl shadow-lg hover:bg-green-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
