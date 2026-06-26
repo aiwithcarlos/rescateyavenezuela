@@ -12,7 +12,9 @@ export default function ReportPage() {
             <div className="bg-yellow-50 border-b border-yellow-200 px-4 py-2 mt-14">
                 <p className="text-sm text-yellow-800 flex items-center gap-1">
                     <span>⚠️</span>
-                    Solo para emergencias reales. Los reportes son públicos.
+                    Permite a la aplicación utilizar tú ubicación para detectar
+                    el lugar del incidente en tiempo real. Solo para emergencias
+                    reales. Los reportes son públicos.
                 </p>
             </div>
 

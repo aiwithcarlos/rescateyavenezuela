@@ -376,8 +376,8 @@ export function ReportForm() {
                                 Avenida o Calle. (El sistema también intetará
                                 detectar tu ubicación automáticamente)
                             </label>
-                            <input
-                                type="text"
+                            <textarea
+                                rows={3}
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 placeholder="Ej: Calle Los Mangos, frente a la panadería, Los Palos Grandes"
