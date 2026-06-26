@@ -16,7 +16,7 @@ export type IncidentStatus =
 
 export type VolunteerStatus = 'en_camino' | 'llego_al_lugar' | 'cancelado';
 
-export type AbilityType = 'brazos' | 'pala_herramientas' | 'vehiculo' | 'maquinaria';
+export type AbilityType = 'brazos' | 'pala_herramientas' | 'vehiculo' | 'maquinaria' | 'insumos_medicos';
 
 // ============================================
 // Entidades principales

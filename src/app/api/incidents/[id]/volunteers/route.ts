@@ -43,7 +43,7 @@ export async function POST(
     }
 
     // Validar habilidades
-    const validAbilities = ['brazos', 'pala_herramientas', 'vehiculo', 'maquinaria'];
+    const validAbilities = ['brazos', 'pala_herramientas', 'vehiculo', 'maquinaria', 'insumos_medicos'];
     const abilities = (body.abilities || []).filter((a) =>
       validAbilities.includes(a)
     );

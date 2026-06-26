@@ -147,6 +147,31 @@ export default function IncidentDetailPage() {
             </p>
           </div>
 
+          {/* Tags de insumos médicos */}
+          {incident.incident_type === 'insumos_medicos_y_alimentos' &&
+            incident.description?.startsWith('Insumos solicitados:') && (
+              <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <h2 className="text-xs font-semibold text-gray-400 uppercase mb-3">
+                  🏥 Insumos solicitados
+                </h2>
+                <div className="flex flex-wrap gap-1.5">
+                  {incident.description
+                    .replace('Insumos solicitados: ', '')
+                    .split('.')[0] // El primer "." separa los tags del resto de la descripción
+                    .split(', ')
+                    .filter(Boolean)
+                    .map((tag: string) => (
+                      <span
+                        key={tag}
+                        className="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                </div>
+              </div>
+            )}
+
           {/* Datos de quien reporta */}
           {(incident.reporter_name || incident.reporter_phone) && (
             <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">

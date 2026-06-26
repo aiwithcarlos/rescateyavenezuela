@@ -31,7 +31,8 @@ CREATE TYPE ability_type AS ENUM (
   'brazos',
   'pala_herramientas',
   'vehiculo',
-  'maquinaria'
+  'maquinaria',
+  'insumos_medicos'
 );
 
 -- =============================================
@@ -211,6 +212,7 @@ CREATE POLICY "Anyone can update volunteers"
 -- MIGRACIÓN: nuevo tipo de incidente (ejecutar si ya existe el ENUM)
 -- =============================================
 -- ALTER TYPE incident_type ADD VALUE 'insumos_medicos_y_alimentos';
+-- ALTER TYPE ability_type ADD VALUE 'insumos_medicos';
 
 -- =============================================
 -- HABILITAR REALTIME (ejecutar después)

@@ -26,6 +26,7 @@ export function FilterBar() {
         'pala_herramientas',
         'vehiculo',
         'maquinaria',
+        'insumos_medicos',
     ];
 
     return (

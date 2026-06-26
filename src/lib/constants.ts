@@ -42,6 +42,7 @@ export const ABILITY_LABELS: Record<AbilityType, string> = {
     pala_herramientas: 'Tengo pala / herramientas',
     vehiculo: 'Tengo vehículo',
     maquinaria: 'Tengo maquinaria',
+    insumos_medicos: 'Tengo insumos médicos / alimentos',
 };
 
 // ============================================
@@ -76,6 +77,7 @@ export const ABILITY_COLORS: Record<AbilityType, string> = {
     pala_herramientas: '#EA580C', // orange-600
     vehiculo: '#059669', // emerald-600
     maquinaria: '#1F2937', // gray-800
+    insumos_medicos: '#0891B2', // cyan-600
 };
 
 // ============================================
@@ -126,4 +128,5 @@ export const ABILITY_ICONS: Record<AbilityType, string> = {
     pala_herramientas: '🪣',
     vehiculo: '🚗',
     maquinaria: '🏗️',
+    insumos_medicos: '🏥',
 };
