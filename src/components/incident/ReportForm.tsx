@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/providers/AppProvider';
@@ -63,6 +63,30 @@ export function ReportForm() {
     // Usar la ubicación del GPS por defecto, o Caracas
     const defaultLat = userLocation?.latitude || 10.5;
     const defaultLng = userLocation?.longitude || -66.85;
+
+    // Auto-detectar dirección desde coordenadas GPS
+    useEffect(() => {
+        if (!userLocation || address.trim()) return;
+
+        let cancelled = false;
+        const fetchAddress = async () => {
+            try {
+                const res = await fetch(
+                    `/api/geocode?lat=${userLocation.latitude}&lng=${userLocation.longitude}`
+                );
+                if (res.ok) {
+                    const data = await res.json();
+                    if (!cancelled && data.address) {
+                        setAddress(data.address);
+                    }
+                }
+            } catch {
+                // Silencioso — el usuario puede escribir la dirección manualmente
+            }
+        };
+        fetchAddress();
+        return () => { cancelled = true; };
+    }, [userLocation]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleSubmit = useCallback(async () => {
         if (!incidentType || !deviceId) return;
