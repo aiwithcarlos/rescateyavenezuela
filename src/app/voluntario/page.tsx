@@ -10,7 +10,11 @@ import {
     INCIDENT_TYPE_ICONS,
     INCIDENT_TYPE_BG_LIGHT,
 } from '@/lib/constants';
-import { formatDistance, haversineDistance, formatRelativeTime } from '@/lib/utils';
+import {
+    formatDistance,
+    haversineDistance,
+    formatRelativeTime,
+} from '@/lib/utils';
 import type { Incident, IncidentType } from '@/types';
 
 const TYPES: IncidentType[] = [
@@ -29,7 +33,9 @@ export default function VoluntarioPage() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
-    const [selectedTypes, setSelectedTypes] = useState<Set<IncidentType>>(new Set());
+    const [selectedTypes, setSelectedTypes] = useState<Set<IncidentType>>(
+        new Set(),
+    );
 
     const fetchIncidents = useCallback(async () => {
         setLoading(true);
@@ -72,9 +78,14 @@ export default function VoluntarioPage() {
         <div className="h-full flex flex-col bg-gray-50">
             <Header />
 
-            <h1 className="text-2xl font-extrabold text-gray-900 px-4 pt-5 pb-2 mt-14">
+            <h1 className="text-2xl font-extrabold text-gray-900 px-4 pt-5 mt-14">
                 Quiero ser voluntario
             </h1>
+            <h3 className="text-1xl font-medium text-gray-900 px-4 pb-2 mt-3">
+                Si quieres ser voluntario solo debes seleccionar un incidente de
+                la lista de abajo para ver sus detalles, y luego hacer click en
+                "Voy para allá".
+            </h3>
 
             {/* Filtros de tipo */}
             <div className="px-4 py-3 bg-white border-b border-gray-100">
@@ -92,7 +103,8 @@ export default function VoluntarioPage() {
                                     : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
                             }`}
                         >
-                            {INCIDENT_TYPE_ICONS[type]} {INCIDENT_TYPE_LABELS[type]}
+                            {INCIDENT_TYPE_ICONS[type]}{' '}
+                            {INCIDENT_TYPE_LABELS[type]}
                         </button>
                     ))}
                 </div>
@@ -113,7 +125,9 @@ export default function VoluntarioPage() {
                 {!loading && incidents.length === 0 && (
                     <div className="text-center py-12">
                         <p className="text-4xl mb-3">📋</p>
-                        <p className="text-sm text-gray-500">No hay incidentes activos</p>
+                        <p className="text-sm text-gray-500">
+                            No hay incidentes activos
+                        </p>
                     </div>
                 )}
 
@@ -127,22 +141,44 @@ export default function VoluntarioPage() {
                             <div className="flex items-start gap-3">
                                 <div
                                     className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg ${
-                                        INCIDENT_TYPE_BG_LIGHT[incident.incident_type]
+                                        INCIDENT_TYPE_BG_LIGHT[
+                                            incident.incident_type
+                                        ]
                                     }`}
                                 >
-                                    {INCIDENT_TYPE_ICONS[incident.incident_type]}
+                                    {
+                                        INCIDENT_TYPE_ICONS[
+                                            incident.incident_type
+                                        ]
+                                    }
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <span className="text-xs font-semibold text-gray-500">
-                                        {INCIDENT_TYPE_LABELS[incident.incident_type]}
+                                        {
+                                            INCIDENT_TYPE_LABELS[
+                                                incident.incident_type
+                                            ]
+                                        }
                                     </span>
                                     <p className="text-sm text-gray-800 line-clamp-2 mt-0.5">
-                                        {incident.description || 'Sin descripción'}
+                                        {incident.description ||
+                                            'Sin descripción'}
                                     </p>
                                     <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
-                                        <span>🕐 {formatRelativeTime(incident.created_at)}</span>
                                         <span>
-                                            👥 {incident.volunteer_count + incident.arrived_count}/{incident.max_volunteers >= 999 ? '∞' : incident.max_volunteers}
+                                            🕐{' '}
+                                            {formatRelativeTime(
+                                                incident.created_at,
+                                            )}
+                                        </span>
+                                        <span>
+                                            👥{' '}
+                                            {incident.volunteer_count +
+                                                incident.arrived_count}
+                                            /
+                                            {incident.max_volunteers >= 999
+                                                ? '∞'
+                                                : incident.max_volunteers}
                                         </span>
                                     </div>
                                 </div>
@@ -170,7 +206,9 @@ export default function VoluntarioPage() {
                         Página {page} de {totalPages} ({total} incidentes)
                     </span>
                     <button
-                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                        onClick={() =>
+                            setPage((p) => Math.min(totalPages, p + 1))
+                        }
                         disabled={page === totalPages}
                         className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
                     >
@@ -185,8 +223,18 @@ export default function VoluntarioPage() {
                     href="/"
                     className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5"
                 >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                        />
                     </svg>
                     Regresar al mapa
                 </Link>
