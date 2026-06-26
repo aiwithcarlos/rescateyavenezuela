@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { INCIDENT_TYPE_LABELS, INCIDENT_TYPE_BG_LIGHT } from '@/lib/constants';
+import { INCIDENT_TYPE_LABELS, INCIDENT_TYPE_BG_LIGHT, INCIDENT_TYPE_ICONS } from '@/lib/constants';
 import {
     formatDistance,
     haversineDistance,
@@ -64,15 +64,7 @@ export function IncidentCard({
                             INCIDENT_TYPE_BG_LIGHT[incident.incident_type]
                         }`}
                     >
-                        {incident.incident_type === 'personas_atrapadas'
-                            ? '🆘'
-                            : incident.incident_type ===
-                                'necesitan_herramientas'
-                              ? '🪣'
-                              : incident.incident_type ===
-                                  'necesitan_maquinaria'
-                                ? '🏗️'
-                                : '🦽'}
+                        {INCIDENT_TYPE_ICONS[incident.incident_type]}
                     </div>
 
                     <div className="flex-1 min-w-0">
