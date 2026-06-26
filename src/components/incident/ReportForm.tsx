@@ -56,7 +56,7 @@ export function ReportForm() {
     const [reporterName, setReporterName] = useState('');
     const [reporterPhone, setReporterPhone] = useState('');
     const [address, setAddress] = useState('');
-    const [volunteersNeeded, setVolunteersNeeded] = useState(999);
+    const [volunteersNeeded, setVolunteersNeeded] = useState(2);
     const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
     const [error, setError] = useState<string | null>(null);
 
@@ -221,6 +221,9 @@ export function ReportForm() {
                                     key={type}
                                     onClick={() => {
                                         setIncidentType(type);
+                                        setVolunteersNeeded(
+                                            type === 'insumos_medicos_y_alimentos' ? 999 : 2
+                                        );
                                         setStep('details');
                                     }}
                                     className={`w-full text-left p-4 rounded-xl border-2 transition-all active:scale-[0.98] ${
@@ -470,9 +473,10 @@ export function ReportForm() {
                                 </p>
                             )}
 
-                        {/* Botón Volver al mapa */}
-                        <Link
-                            href="/"
+                        {/* Botón Volver al paso 1 */}
+                        <button
+                            type="button"
+                            onClick={() => setStep('type')}
                             className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5 mt-1"
                         >
                             <svg
@@ -485,11 +489,11 @@ export function ReportForm() {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                    d="M15 19l-7-7 7-7"
                                 />
                             </svg>
-                            Volver al mapa
-                        </Link>
+                            Volver al paso 1
+                        </button>
                     </div>
                 <Footer />
                 </div>
