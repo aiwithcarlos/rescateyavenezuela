@@ -123,7 +123,7 @@ export function ReportForm() {
     ];
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col">
             {/* Step indicator */}
             <div className="flex items-center gap-1 px-4 py-3 border-b border-gray-100">
                 {(['type', 'details'] as FormStep[]).map((s, i) => (
@@ -199,27 +199,34 @@ export function ReportForm() {
                                 </div>
                             </button>
                         ))}
+
+                        {/* Botón Volver al mapa */}
+                        <Link
+                            href="/"
+                            className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5 mt-1 shrink-0"
+                        >
+                            <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                />
+                            </svg>
+                            Volver al mapa
+                        </Link>
                     </div>
-
-                    {/* Botón Volver al mapa */}
-                    <Link
-                        href="/"
-                        className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5 mt-4 shrink-0"
-                    >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Volver al mapa
-                    </Link>
-
-                    {/* Espacio para que el footer no tape */}
-                    <div style={{ height: "520px" }} />
                 </div>
             )}
 
             {/* Step: Details */}
             {step === 'details' && incidentType && (
-                <div className="flex-1 px-4 py-6 overflow-y-auto">
+                <div className="flex-1 px-4 py-6">
                     <div className="flex items-center gap-2 mb-4">
                         <span className="text-2xl">
                             {INCIDENT_TYPE_ICONS[incidentType]}
@@ -381,16 +388,23 @@ export function ReportForm() {
                     {/* Botón Volver al mapa */}
                     <Link
                         href="/"
-                        className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5 mt-4"
+                        className="w-full py-2.5 text-sm font-semibold text-red-600 border border-red-200 rounded-xl hover:bg-red-50 flex items-center justify-center gap-1.5 mt-1"
                     >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                            />
                         </svg>
                         Volver al mapa
                     </Link>
-
-                    {/* Espacio para que el footer no tape */}
-                    <div style={{ height: "520px" }} />
                 </div>
             )}
         </div>
